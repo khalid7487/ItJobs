@@ -1,0 +1,65 @@
+
+<div class="sidebar">
+<div class="header">
+    <h3>Favorite Stacks</h3>
+</div>
+<div class="mt-2 form">
+
+    <ng-multiselect-dropdown   
+    [placeholder]="'custom placeholder'"
+    [data]="stacks"
+    [(ngModel)]="selectedValue"
+    [settings]="dropdownSettings"
+    (onSelect)="selectChangeHandle($event)"
+    (onSelectAll)="onSelectAll($event)"
+    >
+    </ng-multiselect-dropdown>
+    <button (click)="doSearch()" class="mt-2 btn" >Search</button>
+
+</div>
+</div>
+
+<!-- companies list  -->
+<div class="main-content">
+<div
+class="search-results"
+      infiniteScroll
+      [infiniteScrollDistance]="2"
+      [infiniteScrollThrottle]="50"
+      (scrolled)="onScroll()"
+>
+
+<div *ngFor="let temp of companies" class="box">
+    <div class="header">
+        <h3>{{temp.name}}</h3>
+    </div>
+<table class="table table-borderless table-hover text-dark">
+    <tbody >
+        <tr>
+            <td>Company Name:</td>
+            <th>{{temp.name}}</th>
+        </tr>
+        <tr>
+            <td>Web Address:</td>
+            <th><a href=#>{{temp.web}}</a></th>
+        </tr>
+        <tr>
+            <td>Company Location:</td>
+            <th>{{temp.address}}</th>
+        </tr>
+         <div  class="contain"> 
+        <tr *ngFor="let temp1 of temp.stacks" class="mt-2">  
+             <td class="p-2 mt-1 ml-2 badge bg-primary td-btn">
+               {{temp1}}
+            </td> 
+        </tr>
+     </div>
+    </tbody>
+</table>
+</div>
+
+</div>
+
+</div>
+
+

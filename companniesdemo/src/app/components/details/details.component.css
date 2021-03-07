@@ -1,0 +1,49 @@
+.main-content{
+    position: absolute;
+    margin-top: 53px;
+    margin-left: 460px;
+    background-color: #F7F8FB;
+    width: 66%;
+}
+
+.box{
+    box-sizing: border-box;
+    border-bottom: 2px solid gray;
+    border-radius: 10px 10px;
+    margin-top: 15px;
+}
+.td-btn{
+    cursor: pointer;
+}
+
+/*search item*/
+.sidebar{
+    position: fixed;
+    margin-left: 20px;
+    margin-top: 50px;
+    width: 30%;
+    height: 210px;
+}
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #3F51B5;
+}
+.btn{
+    width: 100px;
+    background-color: #2E59D9;
+    color: white;
+    margin-left: 300px;
+}
+.selectItem{
+    width: 250px;
+    background-color: green;
+}
+.contain{
+    width: 275px;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
