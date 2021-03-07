@@ -1,7 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ElementRef, ViewChild } from '@angular/core';
 import { CompanniesService } from 'src/app/services/compannies.service';
 import Swal from 'sweetalert2'
 
+//For select option
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {FormControl} from '@angular/forms';
+import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
+import {MatChipInputEvent} from '@angular/material/chips';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-details',
@@ -16,6 +23,18 @@ export class DetailsComponent implements OnInit {
   dropdownSettings = {};
   companies: any[];
 
+  //for select option
+  visible = true;
+  selectable = true;
+  removable = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  fruitCtrl = new FormControl();
+  filteredFruits: Observable<string[]>;
+  fruits: string[] = [];
+  allFruits: string[] = [];
+
+  @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
 
   private startPage=1;
@@ -25,11 +44,19 @@ export class DetailsComponent implements OnInit {
   notEmptyPost= true;
   notscorlly= true;
 
-  constructor(private companyService: CompanniesService) { }
+  constructor(private companyService: CompanniesService) {
+//for select option
+    
+    this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
+      startWith(null),
+      map((fruit: string | null) => fruit ? this._filter(fruit) : this.allFruits.slice()));
+
+   }
 
   ngOnInit(): void {
     this.companyLists();
     this.getAllStack();
+
     console.log("update page: " +this.startPage, this.pagelimit);
 
     this.dropdownSettings = {
@@ -41,7 +68,51 @@ export class DetailsComponent implements OnInit {
       itemsShowLimit:4,
       allowSearchFilter: true,
     };
+
+    console.log("All satacks"+ this.stacks);
+
+    console.log(this.selectedValue);
   }
+//start for new search
+add(event: MatChipInputEvent): void {
+  const input = event.input;
+  const value = event.value;
+
+  // Add our fruit
+  if ((value || '').trim()) {
+    this.fruits.push(value.trim());
+  }
+
+  // Reset the input value
+  if (input) {
+    input.value = '';
+  }
+
+  this.fruitCtrl.setValue(null);
+}
+
+remove(fruit: string): void {
+  const index = this.fruits.indexOf(fruit);
+
+  if (index >= 0) {
+    this.fruits.splice(index, 1);
+  }
+}
+
+selected(event: MatAutocompleteSelectedEvent): void {
+  this.fruits.push(event.option.viewValue);
+  this.fruitInput.nativeElement.value = '';
+  this.fruitCtrl.setValue(null);
+}
+
+private _filter(value: string): string[] {
+  const filterValue = value.toLowerCase();
+
+  return this.allFruits.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
+}
+
+
+//end for new search 
   companyLists() {
     this.companyService.getCompannies(this.startPage, this.pagelimit).subscribe(
       data => {
@@ -84,14 +155,23 @@ export class DetailsComponent implements OnInit {
     this.companyService.getValidStack().subscribe(
       data=> {
         this.stacks = data;
-        console.log(JSON.stringify(data));
+        this.allFruits= this.stacks;
+        console.log(JSON.stringify("gdhsuu"+this.stacks));
       }
     )
   }
+ //new search by keyword
+ search1(){
+   console.log(this.fruits);
+ }
+
 
   //search by keyword select
 
   doSearch(){
+    this.selectedValue =this.fruits;
+    console.log("Do search "+ this.selectedValue);
+
     if(this.selectedValue.length == 1){
       this.companyService.getCompaniesByStacks(this.selectedValue).subscribe(
         data =>{
@@ -127,7 +207,7 @@ export class DetailsComponent implements OnInit {
       const stack2 =this.selectedValue[1];
       const stack3=this.selectedValue[2];
       const stack4=this.selectedValue[3];
-      console.log("check by length ="+ stack1 + "2nd=" +stack2+ "3rd="+stack3 );
+      console.log("check by length ="+ stack1 + "2nd=" +stack2+ "3rd="+stack3+ "4th="+stack4 );
       this.companyService.getcompanyByFourStacks(stack1,stack2,stack3,stack4).subscribe(
         data =>{
           this.companies = data;

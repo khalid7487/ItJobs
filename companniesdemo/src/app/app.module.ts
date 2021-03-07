@@ -9,6 +9,13 @@ import { CompanniesService } from './services/compannies.service';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgSelectModule } from '@ng-select/ng-select';
  import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+//For search option
+import {MatChipsModule} from '@angular/material/chips';
+import {  MatFormFieldModule} from '@angular/material/form-field';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -24,6 +31,11 @@ import { NgSelectModule } from '@ng-select/ng-select';
     InfiniteScrollModule,
     NgMultiSelectDropDownModule.forRoot(),
     MDBBootstrapModule.forRoot(),
+    BrowserAnimationsModule,
+    MatChipsModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    MatIconModule
 
   ],
   providers: [CompanniesService],

@@ -1,65 +1,123 @@
 
-<div class="sidebar">
-<div class="header">
-    <h3>Favorite Stacks</h3>
-</div>
-<div class="mt-2 form">
+    <div class="ml-3 sidbar">
+        
+        <div class="header">
+            <h3>Favorite Stacks</h3>
+        </div>
+        <div class="mt-2 form">
+        
 
-    <ng-multiselect-dropdown   
-    [placeholder]="'custom placeholder'"
-    [data]="stacks"
-    [(ngModel)]="selectedValue"
-    [settings]="dropdownSettings"
-    (onSelect)="selectChangeHandle($event)"
-    (onSelectAll)="onSelectAll($event)"
-    >
-    </ng-multiselect-dropdown>
-    <button (click)="doSearch()" class="mt-2 btn" >Search</button>
+            <mat-form-field class="example-chip-list">
+                <mat-label>Search with 1-4 element</mat-label>
+                <mat-chip-list #chipList aria-label="Fruit selection">
+                  <mat-chip
+                    *ngFor="let fruit of fruits"
+                    
+                    [selectable]="selectable"
+                    [removable]="removable"
+                    (removed)="remove(fruit)">
+                    {{fruit}}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                  </mat-chip>
+                  <input
+                    #fruitInput
+                    [formControl]="fruitCtrl"
+                    [matAutocomplete]="auto"
+                    [matChipInputFor]="chipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    (matChipInputTokenEnd)="add($event)">
+                </mat-chip-list>
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                  <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
+                    {{fruit}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <button (click)="doSearch()" class="mt-2 btn" >Search</button>
 
-</div>
-</div>
-
-<!-- companies list  -->
-<div class="main-content">
-<div
-class="search-results"
-      infiniteScroll
-      [infiniteScrollDistance]="2"
-      [infiniteScrollThrottle]="50"
-      (scrolled)="onScroll()"
->
-
-<div *ngFor="let temp of companies" class="box">
-    <div class="header">
-        <h3>{{temp.name}}</h3>
+            <!-- <ng-multiselect-dropdown   
+            [placeholder]="'custom placeholder'"
+            [data]="stacks"
+            [(ngModel)]="selectedValue"
+            [settings]="dropdownSettings"
+            (onSelect)="selectChangeHandle($event)"
+            (onSelectAll)="onSelectAll($event)"
+            >
+            </ng-multiselect-dropdown>
+            <button (click)="doSearch()" class="mt-2 btn" >Search</button> -->
+        
+        </div>
     </div>
-<table class="table table-borderless table-hover text-dark">
-    <tbody >
-        <tr>
-            <td>Company Name:</td>
-            <th>{{temp.name}}</th>
-        </tr>
-        <tr>
-            <td>Web Address:</td>
-            <th><a href=#>{{temp.web}}</a></th>
-        </tr>
-        <tr>
-            <td>Company Location:</td>
-            <th>{{temp.address}}</th>
-        </tr>
-         <div  class="contain"> 
-        <tr *ngFor="let temp1 of temp.stacks" class="mt-2">  
-             <td class="p-2 mt-1 ml-2 badge bg-primary td-btn">
-               {{temp1}}
-            </td> 
-        </tr>
-     </div>
-    </tbody>
-</table>
-</div>
 
-</div>
+    
+    <div class="main">
+        <div
+        class="search-results"
+              infiniteScroll
+              [infiniteScrollDistance]="2"
+              [infiniteScrollThrottle]="50"
+              (scrolled)="onScroll()"
+        >
+        
+        <div *ngFor="let temp of companies" class="box">
+            <div class="header">
+                <h3>{{temp.name}}</h3>
+            </div>
+        <table class="table table-res table-borderless table-hover text-dark">
+            <tbody >
+                <tr>
+                    <td>Company Name:</td>
+                    <th>{{temp.name}}</th>
+                </tr>
+                <tr>
+                    <td>Web Address:</td>
+                    <th><a href=#>{{temp.web}}</a></th>
+                </tr>
+                <tr>
+                    <td>Company Location:</td>
+                    <th>{{temp.address}}</th>
+                </tr>
+                 <div  class="btn-container"> 
+                <tr *ngFor="let temp1 of temp.stacks" class="mt-2">  
+                     <td class="p-2 mt-1 ml-2 badge bg-primary td-btn">
+                       {{temp1}}
+                    </td> 
+                </tr>
+             </div>
+            </tbody>
+        </table>
+        </div>
+        
+        </div>
+    </div>
 
-</div>
 
-
+ <!-- <mat-form-field class="example-chip-list">
+    <mat-label>Favorite Fruits</mat-label>
+    <mat-chip-list #chipList aria-label="Fruit selection">
+      <mat-chip
+        *ngFor="let fruit of fruits"
+        
+        [selectable]="selectable"
+        [removable]="removable"
+        (removed)="remove(fruit)">
+        {{fruit}}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input
+        placeholder="New fruit..."
+        #fruitInput
+        [formControl]="fruitCtrl"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="add($event)">
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
+        {{fruit}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <button (click)="search1()" class="mt-2 btn" >Search</button> -->
+  
